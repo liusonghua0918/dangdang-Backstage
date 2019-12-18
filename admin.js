@@ -9,6 +9,12 @@ const path = require('path')
 const ejs = require("ejs")
 const fs = require("fs")
 
+//设置静态资源文件，存放上传的图片
+//定义静态路由
+// app.use(express.static(path.join(__dirname,"static")))
+app.use(express.static("static"));
+app.use('/upload',express.static(path.join(__dirname,"upload")))  //放在最前面，未登录时，可以加载资源
+
 //使用和设置seesion(用于登录的cookie来设置session)
 app.use(session({
     secret: 'keyboard cat', //加密方式
@@ -37,12 +43,7 @@ app.use(function (req, res, next) {
 
 app.engine("html", ejs.__express)
 app.set('view engine', 'html')
-//设置静态资源文件，存放上传的图片
-//定义静态路由
-// app.use(express.static(path.join(__dirname,"static")))
-app.use(express.static("static"));
 
-app.use('/upload',express.static(path.join(__dirname,"upload")))
 //引入multiparty，对表单进行解析
 var multiparty = require("multiparty")
 // 引入数据库，进行对数据库的曹操作
